@@ -1,0 +1,35 @@
+﻿<Window x:Class="WpfSport.ProductFotStaff"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="ProductFotStaff" Height="600" Width="1000" Background="White" Icon="Resources/icon.ico">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="10"></RowDefinition>
+            <RowDefinition Height="250"></RowDefinition>
+        </Grid.RowDefinitions>
+        <WrapPanel Background="#B5D5CA" Grid.ColumnSpan="2">
+            <Button x:Name="ExitButton" Content="Вернуться назад" Click="ExitButton_Click"></Button>         
+            <TextBox x:Name="SearchTextBox" TextChanged="SearchTextBox_TextChanged"></TextBox>
+            <Label Content="Введите название товара."/>
+        </WrapPanel>
+        <WrapPanel Grid.Row="1" Grid.ColumnSpan="2">
+            <DataGrid x:Name="DataGridDrivers" Grid.Row="4" Grid.ColumnSpan="4" AutoGenerateColumns="False" IsReadOnly="True">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Id" Width="*" Binding="{Binding ProductID}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="номер артикла" Width="*" Binding="{Binding ProductArticleNumber}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Название продукта" Width="*" Binding="{Binding ProductName}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Цена продукта" Width="*" Binding="{Binding ProductCost}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Скидка" Width="*" Binding="{Binding ProductMaxDiscountAmount}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Кол. скидок" Width="*" Binding="{Binding ProductDiscountAmount}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Кол. товаров" Width="*" Binding="{Binding ProductQuantityInStock }"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Описание" Width="*" Binding="{Binding ProductDescription}"></DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </WrapPanel>
+    </Grid>
+</Window>
