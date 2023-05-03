@@ -14,6 +14,7 @@ namespace WpfSport
     
     public partial class Order
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Order()
         {
             this.OrderProduct = new HashSet<OrderProduct>();
@@ -30,6 +31,7 @@ namespace WpfSport
         public virtual OrderStatus OrderStatus { get; set; }
         public virtual PickupPoint PickupPoint { get; set; }
         public virtual User User { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderProduct> OrderProduct { get; set; }
     }
 }

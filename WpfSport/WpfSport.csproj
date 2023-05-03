@@ -172,18 +172,8 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>Sport.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="Sport.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Sport.edmx</DependentUpon>
-      <LastGenOutput>Sport.Context.cs</LastGenOutput>
-    </None>
     <None Include="Sport.edmx.diagram">
       <DependentUpon>Sport.edmx</DependentUpon>
-    </None>
-    <None Include="Sport.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Sport.edmx</DependentUpon>
-      <LastGenOutput>Sport.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -194,6 +184,29 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\picture.png" />
+    <Resource Include="Resources\ProductsPhoto\B538G6.jpg" />
+    <Resource Include="Resources\ProductsPhoto\D648N7.jpg" />
+    <Resource Include="Resources\ProductsPhoto\D830R5.jpg" />
+    <Resource Include="Resources\ProductsPhoto\E324U7.jpg" />
+    <Resource Include="Resources\ProductsPhoto\F735B6.jpg" />
+    <Resource Include="Resources\ProductsPhoto\F746E6.jpg" />
+    <Resource Include="Resources\ProductsPhoto\F937G4.jpg" />
+    <Resource Include="Resources\ProductsPhoto\G403T5.jpg" />
+    <Resource Include="Resources\ProductsPhoto\G598Y6.jpg" />
+    <Resource Include="Resources\ProductsPhoto\А112Т4.jpg" />
+    <Content Include="Sport.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Sport.edmx</DependentUpon>
+      <LastGenOutput>Sport.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Sport.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Sport.edmx</DependentUpon>
+      <LastGenOutput>Sport.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
