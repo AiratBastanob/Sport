@@ -20,30 +20,36 @@
             <Button x:Name="ExitButton" Content="Вернуться назад" Click="ExitButton_Click"></Button>
             <Button x:Name="ToSurchargesButton" Content="Заказы" Click="ToSurchargesButton_Click"/>
             <ComboBox Name="DiscountComboBox" Width="160" SelectionChanged="DiscountComboBox_SelectionChanged"/>
-            <Label Content="Введите название товара:"/>
-            <TextBox x:Name="SearchTextBox" TextChanged="SearchTextBox_TextChanged"></TextBox>
-        </WrapPanel>
-        <WrapPanel Grid.Row="1" Grid.ColumnSpan="2">
-            <DataGrid x:Name="DataGridProduct" Grid.Row="4" Grid.ColumnSpan="4" AutoGenerateColumns="False" IsReadOnly="True" SelectionChanged="DataGridProduct_SelectionChanged">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Id" Width="*" Binding="{Binding ProductID}"></DataGridTextColumn>
-                    <DataGridTextColumn Header="номер артикла" Width="*" Binding="{Binding ProductArticleNumber}"></DataGridTextColumn>
-                    <DataGridTextColumn Header="Название продукта" Width="*" Binding="{Binding ProductName}"></DataGridTextColumn>
-                    <DataGridTextColumn Header="Цена продукта" Width="*" Binding="{Binding ProductCost}"></DataGridTextColumn>
-                    <DataGridTextColumn Header="Скидка" Width="*" Binding="{Binding ProductMaxDiscountAmount}"></DataGridTextColumn>
-                    <DataGridTextColumn Header="Кол. скидок" Width="*" Binding="{Binding ProductDiscountAmount}"></DataGridTextColumn>
-                    <DataGridTextColumn Header="Кол. товаров" Width="*" Binding="{Binding ProductQuantityInStock }"></DataGridTextColumn>
-                    <DataGridTextColumn Header="Описание" Width="*" Binding="{Binding ProductDescription}"></DataGridTextColumn>
-                    <DataGridTemplateColumn Header="Фото" Width="*">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Image Source="{Binding Path=ProductPhoto}"/>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                </DataGrid.Columns>
-            </DataGrid>
-        </WrapPanel>
+            <ComboBox Name="PriceComboBox" Width="160" SelectionChanged="PriceComboBox_SelectionChanged"/>        
+        </WrapPanel>       
+            <ScrollViewer Grid.Row="1" Grid.ColumnSpan="1">
+                <StackPanel Name="productsPanel" Orientation="Vertical">
+                    <StackPanel.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
+                            <Setter Property="Margin" Value="4"/>
+                            <Setter Property="FontSize" Value="14"/>
+                            <Setter Property="FontFamily" Value="Comic Sans MS"/>
+                        </Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Width" Value="80"/>
+                            <Setter Property="Height" Value="50"/>
+                            <Setter Property="Background" Value="Orange"/>
+                            <Setter Property="FontFamily" Value="Comic Sans MS"/>
+                            <Setter Property="FontSize" Value="12"/>
+                            <Setter Property="FontWeight" Value="Bold"/>
+                            <Setter Property="Margin" Value="10"/>
+                        </Style>
+                        <Style TargetType="Grid">
+                            <Setter Property="Margin" Value="10"/>
+                            <Setter Property="Background" Value="#fff"/>
+                        </Style>
+                        <Style TargetType="Image">
+                            <Setter Property="Margin" Value="10"/>
+                        </Style>
+                    </StackPanel.Resources>
+                </StackPanel>
+            </ScrollViewer>     
         <Grid Grid.Row="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
