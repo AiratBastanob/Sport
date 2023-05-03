@@ -27,6 +27,7 @@ namespace WpfSport
             InitializeComponent();
             DataContext = _currentProduct;
             DataGridProduct.ItemsSource = dbmodel.Product.ToList();
+            LoadComboBox();
         }
         /// <summary>
         /// Логика обработки посика
@@ -89,7 +90,7 @@ namespace WpfSport
                 }
             }
         }
-
+       
         /// <summary>
         /// Переход на страницу с заказами
         /// </summary>
@@ -100,22 +101,37 @@ namespace WpfSport
             Close();
         }
 
+        /// <summary>
+        /// Логика выбора картинки
+        /// </summary>
         private void Img_Click_1(object sender, RoutedEventArgs e)
-        { }
-
-            private void UpdateButton_Click(object sender, RoutedEventArgs e)
         {
         }
 
-            private void DeleteButton_Click(object sender, RoutedEventArgs e)
-        { 
+        /// <summary>
+        /// Логика обновление товара
+        /// </summary>
+        private void UpdateButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
 
-            private void AddButton_Click(object sender, RoutedEventArgs e)
-        { 
+        /// <summary>
+        /// Логика удаление товара
+        /// </summary>
+        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        {
         }
 
-            private void DataGridProduct_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        /// <summary>
+        /// Логика добавление товара
+        /// </summary>
+        private void AddButton_Click(object sender, RoutedEventArgs e)
+        {
+        }
+
+
+        private void DataGridProduct_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Product item = DataGridProduct.SelectedItem as Product;
             if (item != null)

@@ -197,6 +197,8 @@
     <Resource Include="Resources\ProductsPhoto\G403T5.jpg" />
     <Resource Include="Resources\ProductsPhoto\G598Y6.jpg" />
     <Resource Include="Resources\ProductsPhoto\А112Т4.jpg" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="Sport.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Sport.edmx</DependentUpon>

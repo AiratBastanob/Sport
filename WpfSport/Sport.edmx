@@ -56,7 +56,7 @@
           <Property Name="ProductDiscountAmount" Type="tinyint" />
           <Property Name="ProductQuantityInStock" Type="int" Nullable="false" />
           <Property Name="ProductDescription" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="ProductPhoto" Type="nvarchar(max)" />
+          <Property Name="ProductPhoto" Type="varbinary(max)" />
         </EntityType>
         <EntityType Name="ProductCategory">
           <Key>
@@ -342,7 +342,7 @@
           <Property Name="ProductDiscountAmount" Type="Byte" />
           <Property Name="ProductQuantityInStock" Type="Int32" Nullable="false" />
           <Property Name="ProductDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ProductPhoto" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ProductPhoto" Type="Binary" MaxLength="Max" FixedLength="false" />
           <NavigationProperty Name="OrderProduct" Relationship="Self.FK_OrderProduct_Product" FromRole="Product" ToRole="OrderProduct" />
           <NavigationProperty Name="ProductCategory" Relationship="Self.FK_Product_ProductCategory" FromRole="Product" ToRole="ProductCategory" />
           <NavigationProperty Name="ProductManufacturer" Relationship="Self.FK_Product_ProductManufacturer" FromRole="Product" ToRole="ProductManufacturer" />

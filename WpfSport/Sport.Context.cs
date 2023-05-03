@@ -15,11 +15,19 @@ namespace WpfSport
     
     public partial class SportDBEntities : DbContext
     {
+        private static SportDBEntities _context;
         public SportDBEntities()
             : base("name=SportDBEntities")
         {
         }
-    
+
+        public static SportDBEntities GetContext()
+        {
+            if (_context == null)
+                _context = new SportDBEntities();
+            return _context;
+        }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();
