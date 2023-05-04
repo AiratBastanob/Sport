@@ -110,6 +110,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Sport.edmx</DependentUpon>
     </Compile>
+    <Compile Include="sysdiagrams.cs">
+      <DependentUpon>Sport.tt</DependentUpon>
+    </Compile>
     <Compile Include="UnitType.cs">
       <DependentUpon>Sport.tt</DependentUpon>
     </Compile>

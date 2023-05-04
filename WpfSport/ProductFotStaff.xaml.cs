@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -24,16 +25,38 @@ namespace WpfSport
         List<Product> products = new List<Product>();
         private Product _currentProduct = new Product();
         StackPanel productPanel;
-        int selectDiscount, selectPrice;
+        string textsearch = "";
+        int selectDiscount, selectPrice, IsSearchText = 0;
+        public string FilePath { get; set; }
+        byte[] imageData;
         public ProductFotStaff()
         {
             InitializeComponent();
-            DataContext = _currentProduct;            
+            DataContext = _currentProduct;
             LoadComponent(false);
             LoadDiscountComboBox();
             LoadPriceComboBox();
-            loadDataProduct();           
-        }       
+            DataGridProduct.ItemsSource = dbmodel.Product.ToList();
+
+            using (var db = new SportDBEntities())
+            {
+                var Category = db.ProductCategory.ToArray();
+                var Supplier = db.ProductSupplier.ToArray();
+                var Manufacture = db.ProductManufacturer.ToArray();
+                foreach (var name in Category)
+                {
+                    CategoryComboBox.Items.Add(name);
+                }
+                foreach (var name in Supplier)
+                {
+                    SupplierComboBox.Items.Add(name);
+                }
+                foreach (var name in Manufacture)
+                {
+                    ManufacturerComboBox.Items.Add(name);
+                }
+            }
+        }
         /// <summary>
         /// Переход к последней странице
         /// </summary>
@@ -45,6 +68,19 @@ namespace WpfSport
         }
 
         /// <summary>
+        /// Логика обработки посика
+        /// </summary>
+        private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            textsearch = SearchTextBox.Text;
+            if (string.IsNullOrEmpty(SearchTextBox.Text))
+                IsSearchText = 0;
+            else
+                IsSearchText = 1;         
+            LoadComponent(true);
+        }
+
+        /// <summary>
         /// Подгрузка данных для ComboBox
         /// </summary>
         private void LoadDiscountComboBox()
@@ -52,125 +88,72 @@ namespace WpfSport
             DiscountComboBox.Items.Add("Всё");
             DiscountComboBox.Items.Add("Скидка 0-9.99%");
             DiscountComboBox.Items.Add("Скидка 10-14.99%");
-            DiscountComboBox.Items.Add("Скидка >15");           
+            DiscountComboBox.Items.Add("Скидка >15");
         }
         private void LoadPriceComboBox()
         {
             PriceComboBox.Items.Add("По возрастанию");
             PriceComboBox.Items.Add("По убыванию");
-            PriceComboBox.Items.Add("По умолчанию");         
-        }       
-       
+            PriceComboBox.Items.Add("По умолчанию");
+        }
+
         /// <summary>
         /// Логика подгрузки данных при выборе фильтрации
         /// </summary>
         private void LoadComponent(bool Check)
         {
-            productPanel = productsPanel;
+            //productPanel = productsPanel;
             using (var db = new SportDBEntities())
             {
                 var productsAll = db.Product.ToList();
                 if (Check == false)
-                {               
+                {
                     products = productsAll;
+                    DataGridProduct.ItemsSource = products;
                 }
                 else
                 {
                     products = productsAll;
+                    if (IsSearchText == 1)
+                    {
+                        products = (from items in db.Product where items.ProductName.Contains(textsearch) select items).ToList();
+                    }
+                    else
+                    {
+
+                    }
                     if (selectDiscount == 0)
                     {
-                        products = productsAll;                      
-                    }                    
-                    if (selectDiscount ==1)
+                        products = productsAll;
+                        DataGridProduct.ItemsSource = products;
+                    }
+                    if (selectDiscount == 1)
                     {
-                        products = (from items in products where items.ProductMaxDiscountAmount > 0 && items.ProductMaxDiscountAmount < 10 select items).ToList();                       
-                    }                    
-                    if (selectDiscount ==2)
+                        products = (from items in products where items.ProductMaxDiscountAmount > 0 && items.ProductMaxDiscountAmount < 10 select items).ToList();
+                        DataGridProduct.ItemsSource = products;
+                    }
+                    if (selectDiscount == 2)
                     {
-                        products = (from items in products where items.ProductMaxDiscountAmount >= 10 && items.ProductMaxDiscountAmount < 15 select items).ToList();                        
-                    }                   
-                    if (selectDiscount ==3)
+                        products = (from items in products where items.ProductMaxDiscountAmount >= 10 && items.ProductMaxDiscountAmount < 15 select items).ToList();
+                        DataGridProduct.ItemsSource = products;
+                    }
+                    if (selectDiscount == 3)
                     {
                         products = (from items in products where items.ProductMaxDiscountAmount > 15 select items).ToList();
+                        DataGridProduct.ItemsSource = products;
                     }
                     if (selectPrice == 0)
                     {
                         products = products.OrderBy(items => items.ProductCost).ToList();
+                        DataGridProduct.ItemsSource = products;
                     }
-                   
+
                     if (selectPrice == 1)
                     {
                         products = products.OrderByDescending(items => items.ProductCost).ToList();
-                    }                  
-                    if (selectPrice == 2)
-                    {
-                        products = products.OrderBy(items => items.ProductCost).ToList();
-                    }                    
-                }
-            }
-        }
-
-        /// <summary>
-        /// Логика отображения данных
-        /// </summary>
-        private void loadDataProduct()
-        {
-            productsPanel.Children.Clear();
-            using (var db = new SportDBEntities())
-            {
-                foreach (var product in products)
-                {
-                    var mainPanel = new Grid();
-                    mainPanel.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(200) });
-                    mainPanel.ColumnDefinitions.Add(new ColumnDefinition());
-                    mainPanel.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(100) });
-                                       
-                    var image = new Image();
-                    var bitmap = new BitmapImage();
-                    MemoryStream ms = new MemoryStream(product.ProductPhoto);
-                    bitmap.BeginInit();
-                    bitmap.StreamSource = ms;
-                    bitmap.EndInit();                   
-                    image.Source = (ImageSource)bitmap;
-
-                    var middlePanel = new StackPanel() { Orientation = Orientation.Vertical, Margin = new Thickness(10, 10, 10, 10) };
-                    var txtName = new TextBlock() { Text = "Название продукта: ", FontWeight = FontWeights.Bold };
-                    var txtDesc = new TextBlock() { Text = "Описание: " };
-                    var txtManufacturer = new TextBlock() { Text = "Производитель: " };
-                    var txtPrice = new TextBlock() { Text = "Цена: " };
-                    middlePanel.Children.Add(txtName);
-                    middlePanel.Children.Add(txtDesc);
-                    middlePanel.Children.Add(txtManufacturer);
-                    middlePanel.Children.Add(txtPrice);
-
-                    var endPanel = new Grid() { Margin = new Thickness(5, 5, 5, 5) };
-                    endPanel.RowDefinitions.Add(new RowDefinition());
-                    endPanel.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(70) });
-
-                    var txtDiscount = new TextBlock() { FontSize = 20, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center, FontWeight = FontWeights.Bold };                    
-                    Grid.SetRow(txtDiscount, 0);                   
-                    endPanel.Children.Add(txtDiscount);                
-
-                    txtName.Text += product.ProductName;
-                    txtDesc.Text += product.ProductDescription;
-                    txtManufacturer.Text += db.ProductManufacturer.Find(product.ProductManufacturerID).ProductManufacturerName;
-                    txtPrice.Text += product.ProductCost;
-
-                    txtDiscount.Text += product.ProductMaxDiscountAmount;
-                    if (product.ProductMaxDiscountAmount > 15)
-                    {
-                        txtDiscount.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7fff00"));
+                        DataGridProduct.ItemsSource = products;
                     }
 
-                    Grid.SetColumn(image, 0);
-                    Grid.SetColumn(middlePanel, 1);
-                    Grid.SetColumn(endPanel, 2);
-
-                    mainPanel.Children.Add(image);
-                    mainPanel.Children.Add(middlePanel);
-                    mainPanel.Children.Add(endPanel);
-
-                    productPanel.Children.Add(mainPanel);
                 }
             }
         }
@@ -200,14 +183,13 @@ namespace WpfSport
                     break;
             }
             LoadComponent(true);
-            loadDataProduct();
         }
 
         /// <summary>
         /// Обработчик для ComboBox с ценами
         /// </summary>
         private void PriceComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {            
+        {
             int select = PriceComboBox.SelectedIndex;
             switch (select)
             {
@@ -219,15 +201,14 @@ namespace WpfSport
                     break;
                 case 2:
                     selectPrice = 2;
-                    break;                
-                default:
-                    selectDiscount = 0;
                     break;
-            }           
+                default:
+                    selectDiscount = 2;
+                    break;
+            }
             LoadComponent(true);
-            loadDataProduct();
         }
-      
+
         /// <summary>
         /// Переход на страницу с заказами
         /// </summary>
@@ -243,6 +224,28 @@ namespace WpfSport
         /// </summary>
         private void Img_Click_1(object sender, RoutedEventArgs e)
         {
+            /*OpenFileDialog ofd = new OpenFileDialog()
+            {
+                DefaultExt = "*.png;*.png",
+                Filter = "файл png (2.png)|*.png",
+                Title = "Выберите фото"
+            };
+            if (!(ofd.ShowDialog() == true))
+                return;
+            FilePath = ofd.FileName;
+            using (FileStream fs = new System.IO.FileStream(FilePath, FileMode.Open))
+            {
+                imageData = new byte[fs.Length];
+                fs.Read(imageData, 0, imageData.Length);
+
+                var bitmap = new BitmapImage();
+                MemoryStream ms = new MemoryStream(imageData);
+                bitmap.BeginInit();
+                bitmap.StreamSource = ms;
+                bitmap.EndInit();
+                PersonPhotoImage.Source = (ImageSource)bitmap;
+                _currentProduct.ProductPhoto = imageData;
+            }*/
         }
 
         /// <summary>
@@ -250,7 +253,73 @@ namespace WpfSport
         /// </summary>
         private void UpdateButton_Click(object sender, RoutedEventArgs e)
         {
+            int select = 0;
+            bool allright = false;
+            Product item = DataGridProduct.SelectedItem as Product;
+            foreach (Product product in dbmodel.Product)
+            {
+                if (product.ProductID == item.ProductID)
+                {
+                    _currentProduct = product;
+                    break;
+                }
+            }
+            StringBuilder errors = new StringBuilder();
+            _currentProduct.ProductArticleNumber = NameArticleTextBox.Text;
+            _currentProduct.ProductName = NameProductTextBox.Text;
+            _currentProduct.ProductDescription = ProductDescriptionTextBox.Text;
+            _currentProduct.ProductCost = Convert.ToDecimal(PriceProductTextBox.Text);
+            _currentProduct.ProductMaxDiscountAmount = Convert.ToByte(MaxDiscountTextBox.Text);
+            _currentProduct.ProductDiscountAmount = Convert.ToByte(CountDiscountTextBox.Text);
+            _currentProduct.ProductQuantityInStock = Convert.ToInt32(CountProductTextBox.Text);
+            _currentProduct.ProductSupplierID = SupplierComboBox.SelectedIndex + 1;
+            _currentProduct.ProductManufacturerID = ManufacturerComboBox.SelectedIndex + 1;
+            _currentProduct.ProductCategoryID = CategoryComboBox.SelectedIndex + 1;
 
+
+            if (_currentProduct.ProductArticleNumber == null)
+                errors.AppendLine("Введите номер артикла" + "\n");
+            if (_currentProduct.ProductName == null)
+                errors.Append("Введите название продукта" + "\n");
+            if (_currentProduct.ProductCost == 0 || _currentProduct.ProductCost.Equals(null))
+                errors.Append("Введите цену продукта" + "\n");
+            if (_currentProduct.ProductMaxDiscountAmount == null)
+                errors.AppendLine("Введите максимальное значение скидки" + "\n");
+            if (_currentProduct.ProductDiscountAmount == null)
+                errors.Append("Введите количество скидок" + "\n");
+            if (_currentProduct.ProductQuantityInStock == 0)
+                errors.Append("Введите адрес эл. почты" + "\n");
+            if (CategoryComboBox.SelectedIndex == -1)
+                errors.Append("Выберите категорию" + "\n");
+            if (ManufacturerComboBox.SelectedIndex == -1)
+                errors.Append("Выберите производителя" + "\n");
+            if (SupplierComboBox.SelectedIndex == -1)
+                errors.Append("Выберите поставщика" + "\n");
+            if (ProductDescriptionTextBox.Text == null)
+                errors.Append("Введите описание" + "\n");
+            if (errors.Length > 0)
+            {
+                MessageBox.Show(errors.ToString());
+                return;
+            }
+            if (_currentProduct.ProductArticleNumber != null && _currentProduct.ProductName != null && _currentProduct.ProductCost != null && _currentProduct.ProductMaxDiscountAmount != null
+                && _currentProduct.ProductDiscountAmount != null && _currentProduct.ProductDescription != null
+                && _currentProduct.ProductQuantityInStock != 0)
+                allright = true;
+            if (allright == true)
+            {
+                try
+                {
+                    dbmodel.SaveChanges();
+                    MessageBox.Show("Информация успешно добавлена!", "Окно оповещений");
+                    DataGridProduct.Items.Refresh();
+                }
+
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message.ToString());
+                }
+            }
         }
 
         /// <summary>
@@ -258,6 +327,27 @@ namespace WpfSport
         /// </summary>
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
+            var productForDeleting = DataGridProduct.SelectedItems as Product;
+
+            if (MessageBox.Show("Вы точно хотите удалить следующие " + productForDeleting + " элементов?", "Внимание!",
+                MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                using (var c = new SportDBEntities())
+                {
+                    c.Entry(productForDeleting).State = System.Data.Entity.EntityState.Deleted;
+                    c.SaveChanges();
+                    MessageBox.Show("Данные удалены!", "Окно оповещений");
+                }
+                DataGridProduct.ItemsSource = dbmodel.Product.ToList();
+                //try
+                //{
+
+                //}
+                //catch (Exception ex)
+                //{
+                //    MessageBox.Show(ex.Message.ToString());
+                //}
+            }
         }
 
         /// <summary>
@@ -265,13 +355,56 @@ namespace WpfSport
         /// </summary>
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-        }
+            StringBuilder errors = new StringBuilder();
 
+            using (SportDBEntities sportDBEntities = new SportDBEntities())
+            {
+                if (_currentProduct.ProductArticleNumber == null)
+                    errors.AppendLine("Введите номер артикла" + "\n");
+                if (_currentProduct.ProductName == null)
+                    errors.Append("Введите название продукта" + "\n");
+                if (_currentProduct.ProductCost == 0 || _currentProduct.ProductCost.Equals(null))
+                    errors.Append("Введите цену продукта" + "\n");
+                if (_currentProduct.ProductMaxDiscountAmount == null)
+                    errors.AppendLine("Введите максимальное значение скидки" + "\n");
+                if (_currentProduct.ProductDiscountAmount == null)
+                    errors.Append("Введите количество скидок" + "\n");
+                if (_currentProduct.ProductQuantityInStock == 0)
+                    errors.Append("Введите количество товаров в наличии" + "\n");
+                if (CategoryComboBox.SelectedIndex == -1)
+                    errors.Append("Выберите категорию" + "\n");
+                if (ManufacturerComboBox.SelectedIndex == -1)
+                    errors.Append("Выберите производителя" + "\n");
+                if (SupplierComboBox.SelectedIndex == -1)
+                    errors.Append("Выберите поставщика" + "\n");
+                if (_currentProduct.ProductDescription == null)
+                    errors.Append("Введите описание" + "\n");
+                if (errors.Length > 0)
+                {
+                    MessageBox.Show(errors.ToString());
+                    return;
+                }
+
+                _currentProduct.ProductSupplierID = SupplierComboBox.SelectedIndex + 1;
+                _currentProduct.ProductManufacturerID = ManufacturerComboBox.SelectedIndex + 1;
+                _currentProduct.ProductCategoryID = CategoryComboBox.SelectedIndex + 1;
+                _currentProduct.UnitTypeID = 1;
+
+                if (_currentProduct.ProductArticleNumber != null && _currentProduct.ProductName != null && _currentProduct.ProductCost != null && _currentProduct.ProductMaxDiscountAmount != null
+                                   && _currentProduct.ProductDiscountAmount != null
+                                   && _currentProduct.ProductQuantityInStock != 0)
+                    sportDBEntities.Product.Add(_currentProduct);
+
+                sportDBEntities.SaveChanges();
+                MessageBox.Show("Информация успешно добавлена!", "Окно оповещений");
+                DataGridProduct.ItemsSource = sportDBEntities.Product.ToList();
+            }
+        }
 
         private void DataGridProduct_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-           
-            Product item=null;
+
+            Product item = DataGridProduct.SelectedItem as Product;
             if (item != null)
             {
                 foreach (Product product in dbmodel.Product)
@@ -291,15 +424,38 @@ namespace WpfSport
             MaxDiscountTextBox.Text = Convert.ToString(_currentProduct.ProductMaxDiscountAmount);
             CountDiscountTextBox.Text = Convert.ToString(_currentProduct.ProductDiscountAmount);
             CountProductTextBox.Text = Convert.ToString(_currentProduct.ProductQuantityInStock);
-            if (_currentProduct.ProductPhoto != null)
+            CategoryComboBox.Items.Clear();
+            SupplierComboBox.Items.Clear();
+            ManufacturerComboBox.Items.Clear();
+            using (var db = new SportDBEntities())
             {
-                var bitmap = new BitmapImage();
-                MemoryStream ms = new MemoryStream(_currentProduct.ProductPhoto);
-                bitmap.BeginInit();
-                bitmap.StreamSource = ms;
-                bitmap.EndInit();
-                PersonPhotoImage.Source = (ImageSource)bitmap;
+                var Category = db.ProductCategory.ToArray();
+                var Supplier = db.ProductSupplier.ToArray();
+                var Manufacture = db.ProductManufacturer.ToArray();
+                foreach (var name in Category)
+                {
+                    CategoryComboBox.Items.Add(name);
+                }
+                foreach (var name in Supplier)
+                {
+                    SupplierComboBox.Items.Add(name);
+                }
+                foreach (var name in Manufacture)
+                {
+                    ManufacturerComboBox.Items.Add(name);
+                }
             }
-        }        
+
+            //if (_currentProduct.ProductPhoto != null)
+            //{
+            //    var bitmap = new BitmapImage();
+            //    MemoryStream ms = new MemoryStream(_currentProduct.ProductPhoto);
+            //    bitmap.BeginInit();
+            //    bitmap.StreamSource = ms;
+            //    bitmap.EndInit();
+            //    PersonPhotoImage.Source = (ImageSource)bitmap;
+            //}
+
+        }
     }
 }

@@ -31,8 +31,7 @@ namespace WpfSport
             DataContext = _currentProduct;
             LoadComponent(false);
             LoadDiscountComboBox();
-            LoadPriceComboBox();
-            loadDataProduct();
+            LoadPriceComboBox();           
         }
 
         /// <summary>
@@ -111,71 +110,7 @@ namespace WpfSport
             }
         }
 
-        /// <summary>
-        /// Логика отображения данных
-        /// </summary>
-        private void loadDataProduct()
-        {
-            productsPanel.Children.Clear();
-            using (var db = new SportDBEntities())
-            {
-                foreach (var product in products)
-                {
-                    var mainPanel = new Grid();
-                    mainPanel.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(200) });
-                    mainPanel.ColumnDefinitions.Add(new ColumnDefinition());
-                    mainPanel.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(100) });
-
-                    var image = new Image();
-                    var bitmap = new BitmapImage();
-                    MemoryStream ms = new MemoryStream(product.ProductPhoto);
-                    bitmap.BeginInit();
-                    bitmap.StreamSource = ms;
-                    bitmap.EndInit();
-                    image.Source = (ImageSource)bitmap;
-
-                    var middlePanel = new StackPanel() { Orientation = Orientation.Vertical, Margin = new Thickness(10, 10, 10, 10) };
-                    var txtName = new TextBlock() { Text = "Название продукта: ", FontWeight = FontWeights.Bold };
-                    var txtDesc = new TextBlock() { Text = "Описание: " };
-                    var txtManufacturer = new TextBlock() { Text = "Производитель: " };
-                    var txtPrice = new TextBlock() { Text = "Цена: " };
-                    middlePanel.Children.Add(txtName);
-                    middlePanel.Children.Add(txtDesc);
-                    middlePanel.Children.Add(txtManufacturer);
-                    middlePanel.Children.Add(txtPrice);
-
-                    var endPanel = new Grid() { Margin = new Thickness(5, 5, 5, 5) };
-                    endPanel.RowDefinitions.Add(new RowDefinition());
-                    endPanel.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(70) });
-
-                    var txtDiscount = new TextBlock() { FontSize = 20, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center, FontWeight = FontWeights.Bold };
-                    Grid.SetRow(txtDiscount, 0);
-                    endPanel.Children.Add(txtDiscount);
-
-                    txtName.Text += product.ProductName;
-                    txtDesc.Text += product.ProductDescription;
-                    txtManufacturer.Text += db.ProductManufacturer.Find(product.ProductManufacturerID).ProductManufacturerName;
-                    txtPrice.Text += product.ProductCost;
-
-                    txtDiscount.Text += product.ProductMaxDiscountAmount;
-                    if (product.ProductMaxDiscountAmount > 15)
-                    {
-                        txtDiscount.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7fff00"));
-                    }
-
-                    Grid.SetColumn(image, 0);
-                    Grid.SetColumn(middlePanel, 1);
-                    Grid.SetColumn(endPanel, 2);
-
-                    mainPanel.Children.Add(image);
-                    mainPanel.Children.Add(middlePanel);
-                    mainPanel.Children.Add(endPanel);
-
-                    productPanel.Children.Add(mainPanel);
-                }
-            }
-        }
-
+      
         /// <summary>
         /// Обработчик для ComboBox со скидками
         /// </summary>
@@ -200,8 +135,7 @@ namespace WpfSport
                     selectDiscount = 0;
                     break;
             }
-            LoadComponent(true);
-            loadDataProduct();
+            LoadComponent(true);          
         }
 
         /// <summary>
@@ -225,8 +159,7 @@ namespace WpfSport
                     selectDiscount = 0;
                     break;
             }
-            LoadComponent(true);
-            loadDataProduct();
+            LoadComponent(true);            
         }
 
         /// <summary>

@@ -12,16 +12,12 @@ namespace WpfSport
     using System;
     using System.Collections.Generic;
     
-    public partial class ProductSupplier
+    public partial class sysdiagrams
     {
-        public ProductSupplier()
-        {
-            this.Product = new HashSet<Product>();
-        }
-    
-        public int ProductSupplierID { get; set; }
-        public string ProductSupplierName { get; set; }
-    
-        public virtual ICollection<Product> Product { get; set; }
+        public string name { get; set; }
+        public int principal_id { get; set; }
+        public int diagram_id { get; set; }
+        public Nullable<int> version { get; set; }
+        public byte[] definition { get; set; }
     }
 }

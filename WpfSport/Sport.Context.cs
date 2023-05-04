@@ -27,7 +27,7 @@ namespace WpfSport
                 _context = new SportDBEntities();
             return _context;
         }
-
+    
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();
@@ -42,6 +42,7 @@ namespace WpfSport
         public virtual DbSet<ProductManufacturer> ProductManufacturer { get; set; }
         public virtual DbSet<ProductSupplier> ProductSupplier { get; set; }
         public virtual DbSet<Role> Role { get; set; }
+        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<UnitType> UnitType { get; set; }
         public virtual DbSet<User> User { get; set; }
     }
