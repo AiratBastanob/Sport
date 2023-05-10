@@ -14,6 +14,7 @@ namespace WpfSport
     
     public partial class OrderStatus
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public OrderStatus()
         {
             this.Order = new HashSet<Order>();
@@ -22,6 +23,7 @@ namespace WpfSport
         public int OrderStatusID { get; set; }
         public string OrderStatusName { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Order> Order { get; set; }
     }
 }

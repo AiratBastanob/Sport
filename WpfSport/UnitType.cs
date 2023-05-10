@@ -14,6 +14,7 @@ namespace WpfSport
     
     public partial class UnitType
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public UnitType()
         {
             this.Product = new HashSet<Product>();
@@ -22,6 +23,7 @@ namespace WpfSport
         public int UnitTypeID { get; set; }
         public string UnitTypeName { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Product> Product { get; set; }
     }
 }

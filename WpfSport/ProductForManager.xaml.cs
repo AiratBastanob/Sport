@@ -17,9 +17,9 @@ using System.Windows.Shapes;
 namespace WpfSport
 {
     /// <summary>
-    /// Логика взаимодействия для ProductFotStaff.xaml
+    /// Логика взаимодействия для ProductForManager.xaml
     /// </summary>
-    public partial class ProductFotStaff : Window
+    public partial class ProductForManager : Window
     {
         SportDBEntities dbmodel = new SportDBEntities();
         List<Product> products = new List<Product>();
@@ -28,7 +28,7 @@ namespace WpfSport
         private int selectDiscount, selectPrice, IsSearchText = 0;
         private string FilePath { get; set; }
         private byte[] imageData;
-        public ProductFotStaff()
+        public ProductForManager()
         {
             InitializeComponent();
             DataContext = _currentProduct;
@@ -56,6 +56,7 @@ namespace WpfSport
                 }
             }
         }
+
         /// <summary>
         /// Переход к последней странице
         /// </summary>
@@ -75,7 +76,7 @@ namespace WpfSport
             if (string.IsNullOrEmpty(SearchTextBox.Text))
                 IsSearchText = 0;
             else
-                IsSearchText = 1;         
+                IsSearchText = 1;
             LoadComponent(true);
         }
 
@@ -208,16 +209,6 @@ namespace WpfSport
         }
 
         /// <summary>
-        /// Переход на страницу с заказами
-        /// </summary>
-        private void ToSurchargesButton_Click(object sender, RoutedEventArgs e)
-        {
-            OrderWindow orderWindow = new OrderWindow();
-            orderWindow.Show();
-            Close();
-        }
-
-        /// <summary>
         /// Логика выбора картинки
         /// </summary>
         private void Img_Click_1(object sender, RoutedEventArgs e)
@@ -338,7 +329,7 @@ namespace WpfSport
 
             if (MessageBox.Show($"Вы точно хотите удалить следующие {productForDeleting.Count} элементов?", "Внимание!",
                 MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
-            {              
+            {
                 try
                 {
                     dbmodel.Product.RemoveRange(productForDeleting);
@@ -351,56 +342,6 @@ namespace WpfSport
                     MessageBox.Show(ex.Message.ToString());
                 }
             }
-        }
-
-        /// <summary>
-        /// Логика добавление товара
-        /// </summary>
-        private void AddButton_Click(object sender, RoutedEventArgs e)
-        {
-            StringBuilder errors = new StringBuilder();
-            Product _currentProductGet = new Product();
-          
-            if (_currentProduct.ProductArticleNumber == null)
-                errors.AppendLine("Введите номер артикла" + "\n");
-            if (_currentProduct.ProductName == null)
-                errors.Append("Введите название продукта" + "\n");
-            if (_currentProduct.ProductCost == 0 || _currentProduct.ProductCost.Equals(null))
-                errors.Append("Введите цену продукта" + "\n");
-            if (_currentProduct.ProductMaxDiscountAmount == null)
-                errors.AppendLine("Введите максимальное значение скидки" + "\n");
-            if (_currentProduct.ProductDiscountAmount == null)
-                errors.Append("Введите количество скидок" + "\n");
-            if (_currentProduct.ProductQuantityInStock == 0)
-                errors.Append("Введите количество товаров в наличии" + "\n");
-            if (CategoryComboBox.SelectedIndex == -1)
-                errors.Append("Выберите категорию" + "\n");
-            if (ManufacturerComboBox.SelectedIndex == -1)
-                errors.Append("Выберите производителя" + "\n");
-            if (SupplierComboBox.SelectedIndex == -1)
-                errors.Append("Выберите поставщика" + "\n");
-            if (_currentProduct.ProductDescription == null)
-                errors.Append("Введите описание" + "\n");
-            if (errors.Length > 0)
-            {
-                MessageBox.Show(errors.ToString());
-                return;
-            }
-            _currentProduct.ProductSupplierID = SupplierComboBox.SelectedIndex + 1;
-            _currentProduct.ProductManufacturerID = ManufacturerComboBox.SelectedIndex + 1;
-            _currentProduct.ProductCategoryID = CategoryComboBox.SelectedIndex + 1;
-            _currentProduct.UnitTypeID = 1;
-
-            if (_currentProduct.ProductArticleNumber != null && _currentProduct.ProductName != null && _currentProduct.ProductCost != null && _currentProduct.ProductMaxDiscountAmount != null
-                               && _currentProduct.ProductDiscountAmount != null
-                               && _currentProduct.ProductQuantityInStock != 0)
-            {             
-                dbmodel.Product.Add(_currentProduct);
-            }
-
-            dbmodel.SaveChanges();
-            MessageBox.Show("Информация успешно добавлена!", "Окно оповещений");
-            DataGridProduct.ItemsSource = dbmodel.Product.ToList();
         }
 
         private void DataGridProduct_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -426,7 +367,7 @@ namespace WpfSport
             MaxDiscountTextBox.Text = Convert.ToString(_currentProduct.ProductMaxDiscountAmount);
             CountDiscountTextBox.Text = Convert.ToString(_currentProduct.ProductDiscountAmount);
             CountProductTextBox.Text = Convert.ToString(_currentProduct.ProductQuantityInStock);
-            ProductDescriptionTextBox.Text =_currentProduct.ProductDescription;
+            ProductDescriptionTextBox.Text = _currentProduct.ProductDescription;
             CategoryComboBox.Items.Clear();
             SupplierComboBox.Items.Clear();
             ManufacturerComboBox.Items.Clear();
@@ -448,12 +389,12 @@ namespace WpfSport
                 {
                     CategoryComboBox.Items.Add(name);
                 }
-                CategoryComboBox.SelectedIndex = _currentProduct.ProductCategoryID-1;
+                CategoryComboBox.SelectedIndex = _currentProduct.ProductCategoryID - 1;
                 foreach (var name in Supplier)
                 {
                     SupplierComboBox.Items.Add(name);
                 }
-                SupplierComboBox.SelectedIndex = _currentProduct.ProductSupplierID- 1;
+                SupplierComboBox.SelectedIndex = _currentProduct.ProductSupplierID - 1;
                 foreach (var name in Manufacture)
                 {
                     ManufacturerComboBox.Items.Add(name);
