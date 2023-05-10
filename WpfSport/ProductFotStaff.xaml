@@ -99,7 +99,7 @@
             </StackPanel>
             <StackPanel Grid.Row="2" Grid.Column="2">
                 <Button Content="Фото*" Click="Img_Click_1"/>
-                <Image x:Name="ProductPhotoImage" Source="{Binding Photo}" HorizontalAlignment="Center" VerticalAlignment="Center" MaxHeight="35" MaxWidth="35"/>
+                <Image x:Name="PersonPhotoImage" Source="{Binding Photo}" HorizontalAlignment="Center" VerticalAlignment="Center" MaxHeight="35" MaxWidth="35"/>
             </StackPanel>            
         </Grid>
         <WrapPanel Grid.Row="2" Grid.ColumnSpan="2" Background="#E0A9AF"></WrapPanel>

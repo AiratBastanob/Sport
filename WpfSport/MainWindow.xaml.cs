@@ -70,7 +70,7 @@ namespace WpfSport
                             {
                                 check = false;
                                 MessageBox.Show("Авторазация успешна", "Менеджер");
-                                ProductForManager window = new ProductForManager();
+                                ProductFotStaff window = new ProductFotStaff();
                                 window.Show();
                                 this.Close();
                                 return;

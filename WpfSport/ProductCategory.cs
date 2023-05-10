@@ -14,7 +14,6 @@ namespace WpfSport
     
     public partial class ProductCategory
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ProductCategory()
         {
             this.Product = new HashSet<Product>();
@@ -23,7 +22,6 @@ namespace WpfSport
         public int ProductCategoryID { get; set; }
         public string ProductCategoryName { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Product> Product { get; set; }
     }
 }
