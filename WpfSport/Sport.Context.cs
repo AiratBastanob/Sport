@@ -15,9 +15,17 @@ namespace WpfSport
     
     public partial class SportDBEntities : DbContext
     {
+        private static SportDBEntities _context;
         public SportDBEntities()
             : base("name=SportDBEntities")
         {
+        }
+
+        public static SportDBEntities GetContext()
+        {
+            if (_context == null)
+                _context = new SportDBEntities();
+            return _context;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -34,6 +42,7 @@ namespace WpfSport
         public virtual DbSet<ProductManufacturer> ProductManufacturer { get; set; }
         public virtual DbSet<ProductSupplier> ProductSupplier { get; set; }
         public virtual DbSet<Role> Role { get; set; }
+        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<UnitType> UnitType { get; set; }
         public virtual DbSet<User> User { get; set; }
     }
