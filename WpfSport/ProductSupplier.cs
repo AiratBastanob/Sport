@@ -14,6 +14,7 @@ namespace WpfSport
     
     public partial class ProductSupplier
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ProductSupplier()
         {
             this.Product = new HashSet<Product>();
@@ -22,6 +23,7 @@ namespace WpfSport
         public int ProductSupplierID { get; set; }
         public string ProductSupplierName { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Product> Product { get; set; }
     }
 }
