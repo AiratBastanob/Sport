@@ -83,6 +83,9 @@
     <Compile Include="ProductCategory.cs">
       <DependentUpon>Sport.tt</DependentUpon>
     </Compile>
+    <Compile Include="ProductForManager.xaml.cs">
+      <DependentUpon>ProductForManager.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ProductFotStaff.xaml.cs">
       <DependentUpon>ProductFotStaff.xaml</DependentUpon>
     </Compile>
@@ -110,9 +113,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Sport.edmx</DependentUpon>
     </Compile>
-    <Compile Include="sysdiagrams.cs">
-      <DependentUpon>Sport.tt</DependentUpon>
-    </Compile>
     <Compile Include="UnitType.cs">
       <DependentUpon>Sport.tt</DependentUpon>
     </Compile>
@@ -132,6 +132,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="OrderWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ProductForManager.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
