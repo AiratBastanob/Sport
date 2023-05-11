@@ -52,7 +52,7 @@ namespace WpfSport
                             {
                                 check = false;
                                 MessageBox.Show("Авторазация успешна", "Клиент");
-                                ProductWindow window = new ProductWindow();
+                                ProductWindow window = new ProductWindow(user.UserID);
                                 window.Show();
                                 this.Close();
                                 return;
@@ -110,7 +110,7 @@ namespace WpfSport
 
         private void GuestButton_Click(object sender, RoutedEventArgs e)
         {
-            ProductWindow window = new ProductWindow();
+            ProductWindow window = new ProductWindow(0);
             window.Show();
             this.Close();
         } 

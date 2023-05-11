@@ -17,8 +17,7 @@
             <RowDefinition Height="250"></RowDefinition>
         </Grid.RowDefinitions>
         <WrapPanel Background="#B5D5CA" Grid.ColumnSpan="2">
-            <Button x:Name="ExitButton" Content="Вернуться назад" Click="ExitButton_Click"></Button>
-            <Button x:Name="ToSurchargesButton" Content="Заказы" Click="ToSurchargesButton_Click"/>
+            <Button x:Name="ExitButton" Content="Вернуться назад" Click="ExitButton_Click"></Button>           
             <ComboBox Name="DiscountComboBox" Width="160" SelectionChanged="DiscountComboBox_SelectionChanged"/>
             <ComboBox Name="PriceComboBox" Width="160" SelectionChanged="PriceComboBox_SelectionChanged"/>
             <Label Content="Введите название товара:"/>

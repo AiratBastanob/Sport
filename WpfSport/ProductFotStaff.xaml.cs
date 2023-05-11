@@ -207,16 +207,7 @@ namespace WpfSport
             LoadComponent(true);
         }
 
-        /// <summary>
-        /// Переход на страницу с заказами
-        /// </summary>
-        private void ToSurchargesButton_Click(object sender, RoutedEventArgs e)
-        {
-            OrderWindow orderWindow = new OrderWindow();
-            orderWindow.Show();
-            Close();
-        }
-
+        
         /// <summary>
         /// Логика выбора картинки
         /// </summary>
@@ -309,7 +300,7 @@ namespace WpfSport
                 MessageBox.Show(errors.ToString());
                 return;
             }
-            if (_currentProduct.ProductArticleNumber != null && _currentProduct.ProductName != null && _currentProduct.ProductCost != null && _currentProduct.ProductMaxDiscountAmount != null
+            if (_currentProduct.ProductArticleNumber != null && _currentProduct.ProductName != null && !_currentProduct.ProductCost.Equals(null) && _currentProduct.ProductMaxDiscountAmount != null
                 && _currentProduct.ProductDiscountAmount != null && _currentProduct.ProductDescription != null
                 && _currentProduct.ProductQuantityInStock != 0)
                 allright = true;
@@ -391,7 +382,7 @@ namespace WpfSport
             _currentProduct.ProductCategoryID = CategoryComboBox.SelectedIndex + 1;
             _currentProduct.UnitTypeID = 1;
 
-            if (_currentProduct.ProductArticleNumber != null && _currentProduct.ProductName != null && _currentProduct.ProductCost != null && _currentProduct.ProductMaxDiscountAmount != null
+            if (_currentProduct.ProductArticleNumber != null && _currentProduct.ProductName != null && !_currentProduct.ProductCost.Equals(null) && _currentProduct.ProductMaxDiscountAmount != null
                                && _currentProduct.ProductDiscountAmount != null
                                && _currentProduct.ProductQuantityInStock != 0)
             {             
@@ -418,7 +409,6 @@ namespace WpfSport
                     }
                 }
             }
-
             UpdateButton.IsEnabled = true;
             NameArticleTextBox.Text = _currentProduct.ProductArticleNumber;
             NameProductTextBox.Text = _currentProduct.ProductName;

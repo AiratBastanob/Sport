@@ -18,38 +18,96 @@
         </Grid.RowDefinitions>
         <WrapPanel Background="#B5D5CA" Grid.ColumnSpan="2">
             <Button x:Name="ExitButton" Content="Вернуться назад" Click="ExitButton_Click"></Button>
-            <Button x:Name="ToSurchargesButton" Content="Заказы" Click="ToSurchargesButton_Click"/>
+            <Button x:Name="ToSurchargesButton" Content="Заказы" Click="ToSurchargesButton_Click" IsEnabled="False"/>
             <ComboBox Name="DiscountComboBox" Width="160" SelectionChanged="DiscountComboBox_SelectionChanged"/>
             <ComboBox Name="PriceComboBox" Width="160" SelectionChanged="PriceComboBox_SelectionChanged"/>
+            <Label Content="Введите название товара:"/>
+            <TextBox x:Name="SearchTextBox" TextChanged="SearchTextBox_TextChanged"></TextBox>
         </WrapPanel>
-        <ScrollViewer Grid.Row="1" Grid.ColumnSpan="1">
-            <StackPanel Name="productsPanel" Orientation="Vertical">
-                <StackPanel.Resources>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
-                        <Setter Property="Margin" Value="4"/>
-                        <Setter Property="FontSize" Value="14"/>
-                        <Setter Property="FontFamily" Value="Comic Sans MS"/>
-                    </Style>
-                    <Style TargetType="Button">
-                        <Setter Property="Width" Value="80"/>
-                        <Setter Property="Height" Value="50"/>
-                        <Setter Property="Background" Value="Orange"/>
-                        <Setter Property="FontFamily" Value="Comic Sans MS"/>
-                        <Setter Property="FontSize" Value="12"/>
-                        <Setter Property="FontWeight" Value="Bold"/>
-                        <Setter Property="Margin" Value="10"/>
-                    </Style>
-                    <Style TargetType="Grid">
-                        <Setter Property="Margin" Value="10"/>
-                        <Setter Property="Background" Value="#fff"/>
-                    </Style>
-                    <Style TargetType="Image">
-                        <Setter Property="Margin" Value="10"/>
-                    </Style>
-                </StackPanel.Resources>
+        <WrapPanel Grid.Row="1" Grid.ColumnSpan="2">
+            <DataGrid x:Name="DataGridProduct" Grid.Row="4" Grid.ColumnSpan="4" AutoGenerateColumns="False" IsReadOnly="True" SelectionChanged="DataGridProduct_SelectionChanged">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Id" Width="*" Binding="{Binding ProductID}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Название товара" Width="*" Binding="{Binding ProductName}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Номер артикла" Width="*" Binding="{Binding ProductArticleNumber}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Цена" Width="*" Binding="{Binding ProductCost}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Макс. значение скидки" Width="*" Binding="{Binding ProductMaxDiscountAmount}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Кол. скидок" Width="*" Binding="{Binding ProductDiscountAmount}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Кол. товаров" Width="*" Binding="{Binding ProductQuantityInStock }"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Описание" Width="*" Binding="{Binding ProductDescription}"></DataGridTextColumn>
+                    <DataGridTemplateColumn Header="Фото" Width="*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image Source="{Binding Path=ProductPhoto}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </WrapPanel>
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="75"/>
+                <RowDefinition Height="75"/>
+                <RowDefinition Height="75"/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Grid.Column="0">
+                <Label Content="Номер артикла:"/>
+                <TextBox x:Name="NameArticleTextBox" Text="{Binding ProductArticleNumber}"  MaxLength="100" IsReadOnly="True"/>
             </StackPanel>
-        </ScrollViewer>
+            <StackPanel Grid.Row="0" Grid.Column="1">
+                <Label Content="Название продукта"/>
+                <TextBox x:Name="NameProductTextBox" Text="{Binding ProductName}"  MaxLength="100" IsReadOnly="True"/>
+            </StackPanel>
+            <StackPanel Grid.Row="0" Grid.Column="2">
+                <Label Content="Цена продукта"/>
+                <TextBox x:Name="PriceProductTextBox" Text="{Binding ProductCost}"  MaxLength="100" IsReadOnly="True"/>
+            </StackPanel>
+            <StackPanel Grid.Row="0" Grid.Column="3">
+                <Label Content="Скидка"/>
+                <TextBox x:Name="MaxDiscountTextBox" Text="{Binding ProductMaxDiscountAmount}"  MaxLength="100" IsReadOnly="True"/>
+            </StackPanel>
+            <StackPanel Grid.Row="1" Grid.Column="0">
+                <Label Content="Кол. скидок"/>
+                <TextBox x:Name="CountDiscountTextBox" Text="{Binding ProductDiscountAmount}"  MaxLength="100" IsReadOnly="True"/>
+            </StackPanel>
+            <StackPanel Grid.Row="1" Grid.Column="1">
+                <Label Content="Кол. товаров"/>
+                <TextBox x:Name="CountProductTextBox" Text="{Binding ProductQuantityInStock}" IsReadOnly="True"/>
+            </StackPanel>
+            <StackPanel Grid.Row="1" Grid.Column="2">
+                <Label Content="Производитель"/>
+                <ComboBox x:Name="ManufacturerComboBox" DisplayMemberPath="ProductManufacturerName" IsEnabled="False"/>
+            </StackPanel>
+            <StackPanel Grid.Row="1" Grid.Column="3">
+                <Label Content="Поставщик"/>
+                <ComboBox x:Name="SupplierComboBox" DisplayMemberPath="ProductSupplierName" IsEnabled="False"/>
+            </StackPanel>
+            <StackPanel Grid.Row="2" Grid.Column="0">
+                <Label Content="Категория"/>
+                <ComboBox x:Name="CategoryComboBox" DisplayMemberPath="ProductCategoryName" IsEnabled="False"/>
+            </StackPanel>
+            <StackPanel Grid.Row="2" Grid.Column="1">
+                <Label Content="Описание"/>
+                <TextBox x:Name="ProductDescriptionTextBox" Text="{Binding ProductDescription}"  MaxLength="100" IsReadOnly="True"/>
+            </StackPanel>
+            <StackPanel Grid.Row="2" Grid.Column="2">               
+                <Image x:Name="ProductPhotoImage" Source="{Binding Photo}" HorizontalAlignment="Center" VerticalAlignment="Center" Height="50" Width="50"/>
+            </StackPanel>
+            <StackPanel Grid.Row="2" Grid.Column="3">
+                <Label Content="Пункт доставки"/>
+                <ComboBox x:Name="OrderAddressComboBox" DisplayMemberPath="Address"/>               
+            </StackPanel>
+        </Grid>
+        <WrapPanel Grid.Row="2" Grid.ColumnSpan="2" Background="#E0A9AF"></WrapPanel>
+        <StackPanel Grid.Row="3" Grid.Column="1">
+            <Button x:Name="AddButton" Content="Добавить в заказ" Click="AddButton_Click" Width="120" IsEnabled="False"/>
+        </StackPanel>
     </Grid>
 </Window>
-
