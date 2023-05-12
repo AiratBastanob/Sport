@@ -24,8 +24,7 @@ namespace WpfSport
         SportDBEntities dbmodel = new SportDBEntities();
         List<Product> products = new List<Product>();
         private Product _currentProduct = new Product();
-        private string textsearch = "";
-        private int selectDiscount, selectPrice, IsSearchText = 0;
+        private int selectDiscount, selectPrice;
         private string FilePath { get; set; }
         private byte[] imageData;
         public ProductFotStaff()
@@ -70,12 +69,11 @@ namespace WpfSport
         /// Логика обработки посика
         /// </summary>
         private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            textsearch = SearchTextBox.Text;
-            if (string.IsNullOrEmpty(SearchTextBox.Text))
-                IsSearchText = 0;
-            else
-                IsSearchText = 1;         
+        {         
+
+            var currentProductName = dbmodel.Product.ToList();
+            currentProductName = currentProductName.Where(p => p.ProductName.ToLower().Contains(SearchTextBox.Text.ToLower())).ToList();
+            DataGridProduct.ItemsSource = currentProductName.OrderBy(p => p.ProductName).ToList();
             LoadComponent(true);
         }
 
@@ -112,17 +110,14 @@ namespace WpfSport
                 else
                 {
                     products = productsAll;
-                    if (IsSearchText == 1)
+                    if (!string.IsNullOrEmpty(SearchTextBox.Text))
                     {
-                        products = (from items in db.Product where items.ProductName.Contains(textsearch) select items).ToList();
-                    }
-                    else
-                    {
-
+                        var currentProductName = dbmodel.Product.ToList();
+                        currentProductName = currentProductName.Where(p => p.ProductName.ToLower().Contains(SearchTextBox.Text.ToLower())).ToList();
+                        products = currentProductName;
                     }
                     if (selectDiscount == 0)
-                    {
-                        products = productsAll;
+                    {                                             
                         DataGridProduct.ItemsSource = products;
                     }
                     if (selectDiscount == 1)
