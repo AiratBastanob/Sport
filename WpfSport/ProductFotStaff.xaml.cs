@@ -13,9 +13,35 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Globalization;
 
 namespace WpfSport
 {
+    public class DiscountAmountToColorConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            byte discountAmount = (byte)value;
+            if (discountAmount <=9.99)
+            {
+                return Brushes.Black;
+            }
+            else if (discountAmount <= 14.99 && discountAmount >= 10)
+            {
+                return Brushes.Green;
+            }
+            else
+            {
+                return Brushes.Red;
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     /// <summary>
     /// Логика взаимодействия для ProductFotStaff.xaml
     /// </summary>
@@ -55,6 +81,7 @@ namespace WpfSport
                 }
             }
         }
+       
         /// <summary>
         /// Переход к последней странице
         /// </summary>

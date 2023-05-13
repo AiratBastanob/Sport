@@ -4,8 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:sys="clr-namespace:System;assembly=mscorlib" 
+      xmlns:local="clr-namespace:WpfSport"
         Title="ProductFotStaff" Height="600" Width="1000" Background="White" Icon="Resources/icon.ico">
-    <Grid>
+    <Window.Resources>
+        <local:DiscountAmountToColorConverter x:Key="DiscountAmountToColorConverter"/>
+    </Window.Resources>
+    <Grid>        
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="150"></ColumnDefinition>
@@ -30,8 +34,15 @@
                     <DataGridTextColumn Header="Название товара" Width="*" Binding="{Binding ProductName}"></DataGridTextColumn>
                     <DataGridTextColumn Header="Номер артикла" Width="*" Binding="{Binding ProductArticleNumber}"></DataGridTextColumn>
                     <DataGridTextColumn Header="Цена" Width="*" Binding="{Binding ProductCost}"></DataGridTextColumn>
-                    <DataGridTextColumn Header="Макс. значение скидки" Width="*" Binding="{Binding ProductMaxDiscountAmount}"></DataGridTextColumn>
-                    <DataGridTextColumn Header="Кол. скидок" Width="*" Binding="{Binding ProductDiscountAmount}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Макс. значение скидки" Width="*" Binding="{Binding ProductMaxDiscountAmount}">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Foreground" Value="{Binding ProductMaxDiscountAmount, Converter={StaticResource DiscountAmountToColorConverter}}"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="Кол. скидок" Width="*" Binding="{Binding ProductDiscountAmount}">                    
+                    </DataGridTextColumn>
                     <DataGridTextColumn Header="Кол. товаров" Width="*" Binding="{Binding ProductQuantityInStock }"></DataGridTextColumn>
                     <DataGridTextColumn Header="Описание" Width="*" Binding="{Binding ProductDescription}"></DataGridTextColumn>
                     <DataGridTemplateColumn Header="Фото" Width="*">
